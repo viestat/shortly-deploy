@@ -1,5 +1,9 @@
 #!/bin/bash
 
+
+# have not looked through here for hardcoded assumptions; we assume we won't have to change anything
+
+
 # ----------------------
 # KUDU Deployment Script
 # Version: 0.1.7

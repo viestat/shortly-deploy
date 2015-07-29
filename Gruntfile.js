@@ -1,8 +1,23 @@
 module.exports = function(grunt) {
 
+  notModules = [
+        './**/*.js',
+        '!./node_modules/**'
+      ]
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
     concat: {
+      backbone: [
+        './public/client/*.js'
+      ],
+      clientLib: {
+        src: [
+        './public/client/lib/*.js'
+        ],
+        dest: './clientLib.js'
+      },
+      all: notModules
     },
 
     mochaTest: {
@@ -21,12 +36,20 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      backbone: [
+        './public/client/lib/backbone.js'
+      ],
+      clientLib: {
+        src: [
+        './clientLib.js'
+        ],
+        dest: './clientLib.min.js'
+      },
+      all: notModules
     },
 
     jshint: {
-      files: [
-        // Add filespec list here
-      ],
+      files: notModules,
       options: {
         force: 'true',
         jshintrc: '.jshintrc',
@@ -38,7 +61,10 @@ module.exports = function(grunt) {
     },
 
     cssmin: {
-        // Add filespec list here
+        public: {
+          src: ['./public/style.css'],
+          dest: './public.min.css'
+        }
     },
 
     watch: {
@@ -91,11 +117,29 @@ module.exports = function(grunt) {
   ////////////////////////////////////////////////////
 
   grunt.registerTask('test', [
+    'jshint',
     'mochaTest'
   ]);
 
   grunt.registerTask('build', [
+    'test',
+    'squishAll'
   ]);
+
+  grunt.registerTask('prod', [
+
+  ]);
+
+  grunt.registerTask('squishBackbone', [
+    'concat:backbone',
+    'uglify:backbone'
+  ]);
+
+  grunt.registerTask('squishAll', [
+    'concat:clientLib',
+    'uglify:clientLib'
+  ]);
+
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
@@ -106,7 +150,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('deploy', [
-      // add your production server task here
+    'build'
   ]);
 
 

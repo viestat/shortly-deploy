@@ -1,6 +1,7 @@
 var app = require('./server-config.js');
 
-var port = 4568;
+var port = process.env.port || 4568; 
+console.log(port); //changed to softcoded port
 
 app.listen(port);
 

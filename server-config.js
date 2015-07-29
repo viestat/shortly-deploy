@@ -1,3 +1,5 @@
+// all paths appear to be relative; should be okay for deployment
+
 var express = require('express');
 var partials = require('express-partials');
 var util = require('./lib/utility');
