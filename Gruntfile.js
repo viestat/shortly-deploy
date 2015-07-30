@@ -102,8 +102,18 @@ module.exports = function(grunt) {
       prodServer: {
       }
     },
+
+    clean: {
+      clientMax: [
+        './public/lib/backbone.js',
+        './public/lib/handlebars.js',
+        './public/lib/jquery.js',
+        './public/lib/underscore.js'
+      ]
+    }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -146,13 +156,14 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('squishAll', [
-    'uglify'
+    'uglify',
+    'clean'
   ]);
 
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
-      grunt.task.run([ 'build' ]);
+      // add your production server task here
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
