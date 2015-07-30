@@ -140,10 +140,6 @@ module.exports = function(grunt) {
     'squishAll'
   ]);
 
-  grunt.registerTask('prod', [
-
-  ]);
-
   grunt.registerTask('squishBackbone', [
     'concat:backbone',
     'uglify:backbone'
@@ -156,7 +152,7 @@ module.exports = function(grunt) {
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
-      // add your production server task here
+      grunt.task.run([ 'build' ]);
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
