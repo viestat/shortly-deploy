@@ -12,7 +12,10 @@ module.exports = function(grunt) {
       backbone: [
         './public/client/*.js'
       ],
-      all: notModules
+      publicClient: {
+        src: ['./public/client/**/*.js'],
+        dest: './public/client/concatClient.js'
+      }
     },
 
     mochaTest: {
@@ -58,8 +61,12 @@ module.exports = function(grunt) {
         ], 
         dest: 
           './public/lib/underscore.min.js' 
+      },
+      publicClient: {
+        src: ['./public/client/concatClient.js'],
+        dest: './public/client/concatClient.min.js'
       }      
-      // all: notModules
+
     },
 
     jshint: {
