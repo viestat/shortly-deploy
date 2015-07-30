@@ -1,10 +1,11 @@
 var Bookshelf = require('bookshelf');
 var path = require('path');
+var host = require('../server');
 
 var db = Bookshelf.initialize({
   client: 'sqlite3',
   connection: {
-    host: '127.0.0.1',
+    host: host,          //changed to softcoded host
     user: 'your_database_user',
     password: 'password',
     database: 'shortlydb',

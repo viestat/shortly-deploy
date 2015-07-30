@@ -1,8 +1,18 @@
 module.exports = function(grunt) {
 
+  notModules = [
+        './**/*.js',
+        '!./node_modules/**'
+      ]
+
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
     concat: {
+      backbone: [
+        './public/client/*.js'
+      ],
+      all: notModules
     },
 
     mochaTest: {
@@ -21,12 +31,39 @@ module.exports = function(grunt) {
     },
 
     uglify: {
+      backbone: {
+        src: [
+          './public/lib/backbone.js'
+        ], 
+        dest: 
+          './public/lib/backbone.min.js'
+      },
+      handlebars: {
+        src: [
+          './public/lib/handlebars.js',
+        ], 
+        dest: 
+          './public/lib/handlebars.min.js',
+      },
+      jquery: {
+        src: [
+          './public/lib/jquery.js',
+        ], 
+        dest: 
+          './public/lib/jquery.min.js',
+      },
+      underscore: {
+        src: [
+          './public/lib/underscore.js'
+        ], 
+        dest: 
+          './public/lib/underscore.min.js' 
+      }      
+      // all: notModules
     },
 
     jshint: {
-      files: [
-        // Add filespec list here
-      ],
+      files: notModules,
       options: {
         force: 'true',
         jshintrc: '.jshintrc',
@@ -38,7 +75,10 @@ module.exports = function(grunt) {
     },
 
     cssmin: {
-        // Add filespec list here
+        public: {
+          src: ['./public/style.css'],
+          dest: './public.min.css'
+        }
     },
 
     watch: {
@@ -62,8 +102,18 @@ module.exports = function(grunt) {
       prodServer: {
       }
     },
+
+    clean: {
+      clientMax: [
+        './public/lib/backbone.js',
+        './public/lib/handlebars.js',
+        './public/lib/jquery.js',
+        './public/lib/underscore.js'
+      ]
+    }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-watch');
@@ -91,11 +141,25 @@ module.exports = function(grunt) {
   ////////////////////////////////////////////////////
 
   grunt.registerTask('test', [
+    'jshint',
     'mochaTest'
   ]);
 
   grunt.registerTask('build', [
+    'test',
+    'squishAll'
   ]);
+
+  grunt.registerTask('squishBackbone', [
+    'concat:backbone',
+    'uglify:backbone'
+  ]);
+
+  grunt.registerTask('squishAll', [
+    'uglify',
+    'clean'
+  ]);
+
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
@@ -106,7 +170,7 @@ module.exports = function(grunt) {
   });
 
   grunt.registerTask('deploy', [
-      // add your production server task here
+    'build'
   ]);
 
 
