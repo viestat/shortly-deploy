@@ -7,16 +7,11 @@ module.exports = function(grunt) {
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
     concat: {
       backbone: [
         './public/client/*.js'
       ],
-      clientLib: {
-        src: [
-        './public/client/lib/*.js'
-        ],
-        dest: './clientLib.js'
-      },
       all: notModules
     },
 
@@ -36,16 +31,35 @@ module.exports = function(grunt) {
     },
 
     uglify: {
-      backbone: [
-        './public/client/lib/backbone.js'
-      ],
-      clientLib: {
+      backbone: {
         src: [
-        './clientLib.js'
-        ],
-        dest: './clientLib.min.js'
+          './public/lib/backbone.js'
+        ], 
+        dest: 
+          './public/lib/backbone.min.js'
       },
-      all: notModules
+      handlebars: {
+        src: [
+          './public/lib/handlebars.js',
+        ], 
+        dest: 
+          './public/lib/handlebars.min.js',
+      },
+      jquery: {
+        src: [
+          './public/lib/jquery.js',
+        ], 
+        dest: 
+          './public/lib/jquery.min.js',
+      },
+      underscore: {
+        src: [
+          './public/lib/underscore.js'
+        ], 
+        dest: 
+          './public/lib/underscore.min.js' 
+      }      
+      // all: notModules
     },
 
     jshint: {
@@ -136,8 +150,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('squishAll', [
-    'concat:clientLib',
-    'uglify:clientLib'
+    'uglify'
   ]);
 
 
