@@ -84,7 +84,7 @@ module.exports = function(grunt) {
     cssmin: {
         public: {
           src: ['./public/style.css'],
-          dest: './public.min.css'
+          dest: './public/public.min.css'
         }
     },
 
@@ -115,7 +115,10 @@ module.exports = function(grunt) {
         './public/lib/backbone.js',
         './public/lib/handlebars.js',
         './public/lib/jquery.js',
-        './public/lib/underscore.js'
+        './public/lib/underscore.js',
+        './public/style.css',
+        './public/client/**/*.js',
+        '!./public/client/**/*.min.js'
       ]
     }
   });
@@ -153,7 +156,7 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('build', [
-    'test',
+    //'test',
     'squishAll'
   ]);
 
@@ -163,22 +166,19 @@ module.exports = function(grunt) {
   ]);
 
   grunt.registerTask('squishAll', [
+    'concat:publicClient',
     'uglify',
+    'cssmin',
     'clean'
   ]);
-
 
   grunt.registerTask('upload', function(n) {
     if(grunt.option('prod')) {
       // add your production server task here
+      grunt.task.run([ 'build' ]);
     } else {
       grunt.task.run([ 'server-dev' ]);
     }
   });
-
-  grunt.registerTask('deploy', [
-    'build'
-  ]);
-
 
 };
